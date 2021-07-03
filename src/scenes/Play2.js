@@ -178,7 +178,7 @@ class Play2 extends Phaser.Scene {
             if (winner > this.highscore) {
                 this.highscore = winner;
             }
-            this.scene.start("menuScene", { highscore: this.highscore, player: player1 });
+            this.scene.start("menuScene", { highscore: this.highscore});
             this.sound.play('back_music');
         }
     }
