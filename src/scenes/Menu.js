@@ -3,6 +3,13 @@ class Menu extends Phaser.Scene {
         super("menuScene");
     }
 
+    init(data) {
+        if (data.highscore == undefined) {
+            data.highscore = 0;
+        }
+        this.highscore = data.highscore;
+    }
+
     preload() {
         // load audio
         this.load.audio('sfx_select', './assets/blip_select12.wav');
@@ -31,8 +38,11 @@ class Menu extends Phaser.Scene {
         menuConfig.backgroundColor = '#00FF00';
         menuConfig.color = '#000';
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press ← for Novice or → for Expert', menuConfig).setOrigin(0.5);
+        console.log((game.config.height/2 + borderUISize + borderPadding))
+        this.add.text(game.config.width/2, (game.config.height/2 + borderUISize + borderPadding)/3, 'Press ↑ for Two-Player', menuConfig).setOrigin(0.5);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
     }
 
     update() {
@@ -43,7 +53,7 @@ class Menu extends Phaser.Scene {
                 gameTimer: 10000 //60000
             }
             this.sound.play('sfx_select');
-            this.scene.start('playScene');
+            this.scene.start('playScene', { highscore: this.highscore });
             let bm = 1;
         }
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
@@ -53,7 +63,17 @@ class Menu extends Phaser.Scene {
                 gameTimer: 10000 //45000    
             }
             this.sound.play('sfx_select');
-            this.scene.start('playScene');
+            this.scene.start('playScene', { highscore: this.highscore });
+            let bm = 1;    
+        }
+        if (Phaser.Input.Keyboard.JustDown(keyUP)) {
+            // hard mode
+            game.settings = {
+                spaceshipSpeed: 4,
+                gameTimer: 10000 //45000    
+            }
+            this.sound.play('sfx_select');
+            this.scene.start('play2Scene', { highscore: this.highscore });
             let bm = 1;    
         }
         
